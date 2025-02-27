@@ -99,7 +99,7 @@ Meet **Project Logkeeper**: a clean, scalable logger setup that empowers you to 
 
    Next time you run, `MyExclusiveError` is available for logging or raising, automatically.
 
-6. **Use**  
+6. **Easy to Use**  
    ```python
     from logs.core.factory import LogFactory
 
