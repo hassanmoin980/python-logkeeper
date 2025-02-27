@@ -59,7 +59,7 @@ Meet **Project Logkeeper**: a clean, scalable logger setup that empowers you to 
 
 2. **Install Requirements**  
    ```bash
-   pip install -r ./logs/requirements.txt
+   pip install -r requirements.txt
    ```
 
 3. **Explore the Code**  
