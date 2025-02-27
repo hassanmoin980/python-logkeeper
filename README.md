@@ -84,12 +84,28 @@ Meet **Project Logkeeper**: a clean, scalable logger setup that empowers you to 
    ```python
    from logs.core.registry import register
 
-   @register("MyExclusiveError", code="E1001")
+   @register("ExclusiveError", code="E1001")
    class MyExclusiveError(Exception):
+       pass
+
+   @register(code="E1001")
+   class AnotherExclusiveError(Exception):
+       pass
+
+   @register
+   class AnotherNewExclusiveError(Exception):
        pass
    ```
 
    Next time you run, `MyExclusiveError` is available for logging or raising, automatically.
+
+6. **Use**  
+   ```python
+    from logs.core.factory import LogFactory
+
+    logger = LogFactory.create_logger(__name__)
+    logger.error("TESTING AN EXCLUSIVE EXCEPTION.", extra={"issue": "ExclusiveError"})
+   ```
 
 ---
 
