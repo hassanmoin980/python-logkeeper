@@ -1,0 +1,4 @@
+colorama==0.4.6
+colorlog==6.9.0
+python-json-logger==3.2.1
+PyYAML==6.0.2
