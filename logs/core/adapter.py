@@ -1,6 +1,6 @@
 import logging
 
-from logs.core.registry import IssueRegistry
+from .registry import IssueRegistry
 
 
 class IssueRegistryAdapter(logging.LoggerAdapter):

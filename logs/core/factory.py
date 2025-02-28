@@ -6,8 +6,8 @@ from typing import ClassVar
 
 import yaml
 
-import logs.issues  # noqa: F401
-from logs.core.adapter import IssueRegistryAdapter
+from .. import issues  # noqa: F401
+from .adapter import IssueRegistryAdapter
 
 
 class LogFactory:
