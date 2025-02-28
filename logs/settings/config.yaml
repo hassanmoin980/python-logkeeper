@@ -56,7 +56,7 @@ handlers:
     # This queueHandler delegates to multiple handlers below
     handlers:
       - consoleHandler
-      # - rotatingFileHandler
+      - rotatingFileHandler
       # - jsonFileHandler
     respect_handler_level: True
 
