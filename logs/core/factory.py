@@ -1,6 +1,7 @@
 import atexit
 import logging
 import logging.config
+import os
 from pathlib import Path
 from typing import ClassVar
 
@@ -23,6 +24,36 @@ class LogFactory:
     _initialized: ClassVar[bool] = False
 
     @classmethod
+    def _setup_file_output_directory(
+        cls, config: dict, log_project_root: str | None = None
+    ) -> dict:
+        """
+        Process the logging configuration to ensure that all file-based handlers
+        have absolute paths (relative to project_root) and that their directories exist.
+
+        Args:
+            config (dict): The logging configuration dictionary.
+            project_root (Path | None): The root directory of the project. If None,
+                                        it defaults to the parent directory of this file's parent.
+
+        Returns:
+            dict: The updated logging configuration.
+        """
+        if log_project_root is None:
+            output_folder = "output"  # TODO: Make output fodler path dynamic
+            current_dir = os.path.abspath(os.path.dirname(__file__))
+            log_project_root = os.path.abspath(os.path.join(current_dir, os.pardir))
+
+            for handler_name, handler in config.get("handlers", {}).items():
+                if handler.get("class") == "logging.handlers.RotatingFileHandler":
+                    handler["filename"] = os.path.join(
+                        log_project_root, output_folder, handler["filename"]
+                    )
+                    os.makedirs(os.path.dirname(handler["filename"]), exist_ok=True)
+
+        return config
+
+    @classmethod
     def _initialize(cls) -> None:
         """
         Ensures logging is setup only once
@@ -42,6 +73,7 @@ class LogFactory:
         try:
             with open(config_path, "r") as file:
                 config = yaml.safe_load(file)
+                config = cls._setup_file_output_directory(config)
                 logging.config.dictConfig(config)  # type: ignore
 
         except (FileNotFoundError, yaml.YAMLError):
@@ -85,11 +117,11 @@ if __name__ == "__main__":
 
     logger.info("INFO.")
 
-    if __debug__:
-        logger.debug("DEBUG.")
+    # if __debug__:
+    #     logger.debug("DEBUG.")
 
-    logger.warning("WARNING.")
+    # logger.warning("WARNING.")
     logger.error("ERROR.")
-    logger.critical("CRITICAL.")
+    # logger.critical("CRITICAL.")
 
-    logger.error("DUMMY ERROR.", extra={"issue": "MyCustomWarning"})
+    # logger.error("DUMMY ERROR.", extra={"issue": "MyCustomWarning"})
