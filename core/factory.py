@@ -7,8 +7,7 @@ from typing import ClassVar
 
 import yaml
 
-import issues  # noqa: F401
-
+from .. import issues  # noqa: F401
 from .adapter import IssueRegistryAdapter
 
 

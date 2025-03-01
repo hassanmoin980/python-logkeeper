@@ -1,4 +1,4 @@
-from core.registry import register
+from ..core.registry import register
 
 
 @register(code="W1001")
