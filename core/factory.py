@@ -2,6 +2,7 @@ import atexit
 import logging
 import logging.config
 import os
+from fileinput import filename
 from pathlib import Path
 from typing import ClassVar
 
@@ -41,14 +42,22 @@ class LogFactory:
             dict: The updated logging configuration.
         """
         if log_project_root is None:
-            output_folder = "logs"  # TODO: Make output fodler path dynamic
             current_dir = os.path.abspath(os.path.dirname(__file__))
             log_project_root = os.path.abspath(os.path.join(current_dir, os.pardir))
 
-            for handler_name, handler in config.get("handlers", {}).items():
-                if handler.get("class") == "logging.handlers.RotatingFileHandler":
+            for handler in config.get("handlers", {}).values():
+                if handler.get("class") != "logging.handlers.RotatingFileHandler":
+                    continue
+
+                foldername = handler.pop("foldername", "")
+                output_folder = (
+                    os.path.join("logs", foldername) if foldername else "logs"
+                )
+
+                filename = handler.get("filename")
+                if filename:
                     handler["filename"] = os.path.join(
-                        log_project_root, output_folder, handler["filename"]
+                        log_project_root, output_folder, filename
                     )
                     os.makedirs(os.path.dirname(handler["filename"]), exist_ok=True)
 
