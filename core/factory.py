@@ -7,7 +7,8 @@ from typing import ClassVar
 
 import yaml
 
-from .. import issues  # noqa: F401
+import issues  # noqa: F401
+
 from .adapter import IssueRegistryAdapter
 
 
@@ -40,7 +41,7 @@ class LogFactory:
             dict: The updated logging configuration.
         """
         if log_project_root is None:
-            output_folder = "output"  # TODO: Make output fodler path dynamic
+            output_folder = "logs"  # TODO: Make output fodler path dynamic
             current_dir = os.path.abspath(os.path.dirname(__file__))
             log_project_root = os.path.abspath(os.path.join(current_dir, os.pardir))
 
